@@ -4,10 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
 import java.io.*;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import java.net.*;
 import java.util.*;
 
 public class IOUtil
@@ -82,6 +79,18 @@ public class IOUtil
             return in.readLine();
         }
         catch (Exception e)
+        {
+            return "<Unknown address>";
+        }
+    }
+
+    public static String getLocalAddress()
+    {
+        try
+        {
+            return InetAddress.getLocalHost().getHostAddress();
+        }
+        catch (UnknownHostException e)
         {
             return "<Unknown address>";
         }

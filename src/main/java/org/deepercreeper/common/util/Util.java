@@ -4,6 +4,7 @@ import java.awt.*;
 import java.net.URI;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class Util
 {
@@ -14,6 +15,17 @@ public class Util
         try
         {
             Thread.sleep(timeout);
+        }
+        catch (InterruptedException ignored)
+        {
+        }
+    }
+
+    public static void await(CountDownLatch latch)
+    {
+        try
+        {
+            latch.await();
         }
         catch (InterruptedException ignored)
         {
