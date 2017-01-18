@@ -1,6 +1,7 @@
 package org.deepercreeper.common.util;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 
 import java.io.*;
@@ -81,6 +82,26 @@ public class IOUtil
         catch (Exception e)
         {
             return "<Unknown address>";
+        }
+    }
+
+    public static String readSite(String address)
+    {
+        StringBuilder site = new StringBuilder();
+        try
+        {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(address).openStream()));
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                site.append(line).append("\n");
+            }
+            IOUtils.closeQuietly(reader);
+            return site.toString();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Could not read site: " + address, e);
         }
     }
 

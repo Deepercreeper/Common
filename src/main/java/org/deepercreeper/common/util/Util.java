@@ -1,7 +1,13 @@
 package org.deepercreeper.common.util;
 
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
+import java.io.ByteArrayInputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -76,6 +82,20 @@ public class Util
             {
                 throw new RuntimeException("Could not browse URL: " + uri.toString());
             }
+        }
+    }
+
+    public static Document readDocument(String document)
+    {
+        try
+        {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            return dBuilder.parse(new ByteArrayInputStream(document.getBytes(StandardCharsets.UTF_8)));
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Could not parse document: " + document, e);
         }
     }
 }
