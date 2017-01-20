@@ -124,6 +124,7 @@ public class BundleTest
         Assert.assertArrayEquals(bytes, bundle.getBytes("1"));
 
         Bundle decodedBundle = Bundle.decode(bundle.encode());
+
         Assert.assertArrayEquals(bundle.getBytes("1"), decodedBundle.getBytes("1"));
     }
 
@@ -137,43 +138,35 @@ public class BundleTest
         Assert.assertArrayEquals(integers, bundle.getIntegers("1"));
 
         Bundle decodedBundle = Bundle.decode(bundle.encode());
-        Assert.assertArrayEquals(bundle.getIntegers("1"), decodedBundle.getIntegers("1"));
 
+        Assert.assertArrayEquals(bundle.getIntegers("1"), decodedBundle.getIntegers("1"));
+    }
+
+    @Test
+    public void testBooleans()
+    {
+        boolean[] booleans = new boolean[]{true, false, true, false};
+        Bundle bundle = new Bundle();
+        bundle.put("1", booleans);
+
+        Assert.assertArrayEquals(booleans, bundle.getBooleans("1"));
+
+        Bundle decodedBundle = Bundle.decode(bundle.encode());
+
+        Assert.assertArrayEquals(bundle.getBooleans("1"), decodedBundle.getBooleans("1"));
     }
 
     private byte[] createByteArray()
     {
         return new byte[]{
-                -128,
-                -127,
-                -126,
-                -3,
-                -2,
-                -1,
-                1,
-                2,
-                3,
-                125,
-                126,
-                127
+                -128, -127, -126, -3, -2, -1, 1, 2, 3, 125, 126, 127
         };
     }
 
     private int[] createIntArray()
     {
         return new int[]{
-                Integer.MIN_VALUE,
-                Integer.MIN_VALUE + 1,
-                Integer.MIN_VALUE + 2,
-                -3,
-                -2,
-                -1,
-                1,
-                2,
-                3,
-                Integer.MAX_VALUE - 2,
-                Integer.MAX_VALUE - 1,
-                Integer.MAX_VALUE
+                Integer.MIN_VALUE, Integer.MIN_VALUE + 1, Integer.MIN_VALUE + 2, -3, -2, -1, 1, 2, 3, Integer.MAX_VALUE - 2, Integer.MAX_VALUE - 1, Integer.MAX_VALUE
         };
     }
 }

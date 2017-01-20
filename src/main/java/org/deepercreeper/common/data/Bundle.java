@@ -65,6 +65,17 @@ public class Bundle implements Encodable
         return this;
     }
 
+    public Bundle put(String key, boolean[] value)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (boolean b : value)
+        {
+            builder.append(b ? '1' : '0');
+        }
+        put(key, builder.toString());
+        return this;
+    }
+
     public Bundle put(String key, byte[] value)
     {
         StringBuilder builder = new StringBuilder();
@@ -151,6 +162,17 @@ public class Bundle implements Encodable
         {
             throw new IllegalArgumentException("Key is no boolean: " + key + " -> " + value);
         }
+    }
+
+    public boolean[] getBooleans(String key)
+    {
+        String value = get(key);
+        boolean[] booleans = new boolean[value.length()];
+        for (int i = 0; i < booleans.length; i++)
+        {
+            booleans[i] = value.charAt(i) == '1';
+        }
+        return booleans;
     }
 
     public byte[] getBytes(String key)
