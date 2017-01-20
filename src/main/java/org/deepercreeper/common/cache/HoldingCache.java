@@ -1,5 +1,6 @@
 package org.deepercreeper.common.cache;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,6 +19,32 @@ public class HoldingCache<K, V> implements Cache<K, V>
     public boolean contains(K key)
     {
         return items.containsKey(key);
+    }
+
+    @Override
+    public boolean containsAll(Collection<K> keys)
+    {
+        for (K key : keys)
+        {
+            if (!items.containsKey(key))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean containsAll(K[] keys)
+    {
+        for (K key : keys)
+        {
+            if (!items.containsKey(key))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

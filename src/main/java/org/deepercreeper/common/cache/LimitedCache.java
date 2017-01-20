@@ -37,6 +37,32 @@ public class LimitedCache<K, V> implements Cache<K, V>
     }
 
     @Override
+    public boolean containsAll(Collection<K> keys)
+    {
+        for (K key : keys)
+        {
+            if (!map.containsKey(key))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean containsAll(K[] keys)
+    {
+        for (K key : keys)
+        {
+            if (!map.containsKey(key))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public V get(K key)
     {
         return map.get(key);

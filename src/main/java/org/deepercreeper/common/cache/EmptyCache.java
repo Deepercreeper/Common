@@ -1,5 +1,6 @@
 package org.deepercreeper.common.cache;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -20,13 +21,23 @@ public class EmptyCache<K, V> implements Cache<K, V>
         }
 
         @Override
-        public void remove()
-        {
-        }
+        public void remove() {}
     };
 
     @Override
     public boolean contains(K key)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<K> keys)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(K[] keys)
     {
         return false;
     }
@@ -38,24 +49,16 @@ public class EmptyCache<K, V> implements Cache<K, V>
     }
 
     @Override
-    public void put(K key, V item)
-    {
-    }
+    public void put(K key, V item) {}
 
     @Override
-    public void putAll(Map<K, V> map)
-    {
-    }
+    public void putAll(Map<K, V> map) {}
 
     @Override
-    public void remove(K key)
-    {
-    }
+    public void remove(K key) {}
 
     @Override
-    public void clear()
-    {
-    }
+    public void clear() {}
 
     @Override
     public Iterator<V> iterator()
