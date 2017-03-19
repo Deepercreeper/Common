@@ -33,9 +33,30 @@ public class Util
         {
             latch.await();
         }
-        catch (InterruptedException ignored)
+        catch (InterruptedException ignored) {}
+    }
+
+    public static Class<?> getClass(String name)
+    {
+        try
         {
+            return Class.forName(name);
         }
+        catch (ClassNotFoundException e)
+        {
+            throw new IllegalArgumentException("Could not find class: " + name);
+        }
+    }
+
+    public static <T> Class<? extends T> getClass(String name, Class<T> superClass)
+    {
+        Class<?> classLiteral = getClass(name);
+        if (superClass.isAssignableFrom(classLiteral))
+        {
+            //noinspection unchecked
+            return (Class<? extends T>) classLiteral;
+        }
+        throw new IllegalArgumentException("Class is not of type " + superClass + ": " + name);
     }
 
     public static int[] toArray(Collection<Integer> integers)
