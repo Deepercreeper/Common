@@ -1,12 +1,13 @@
 package org.deepercreeper.common.pairs;
 
-public interface Pair<K, V>
-{
-    void setKey(K key);
+import org.jetbrains.annotations.NotNull;
 
-    void setValue(V value);
+public interface Pair<K, V> {
+    void setKey(@NotNull K key);
 
-    K getKey();
+    void setValue(@NotNull V value);
 
-    V getValue();
+    @NotNull K getKey();
+
+    @NotNull V getValue();
 }

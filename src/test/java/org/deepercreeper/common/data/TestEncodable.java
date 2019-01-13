@@ -3,15 +3,14 @@ package org.deepercreeper.common.data;
 import org.deepercreeper.common.encoding.Decoder;
 import org.deepercreeper.common.encoding.Encodable;
 import org.deepercreeper.common.util.CodingUtil;
-import org.deepercreeper.common.util.ConditionUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class TestEncodable implements Encodable
 {
     private final String value;
 
-    public TestEncodable(String value)
+    public TestEncodable(@NotNull String value)
     {
-        ConditionUtil.checkNotNull(value, "The value");
         this.value = value;
     }
 
@@ -20,6 +19,7 @@ public class TestEncodable implements Encodable
         return value;
     }
 
+    @NotNull
     @Override
     public String encode()
     {
@@ -58,8 +58,9 @@ public class TestEncodable implements Encodable
     {
         return new Decoder<TestEncodable>()
         {
+            @NotNull
             @Override
-            public TestEncodable decode(String value)
+            public TestEncodable decode(@NotNull String value)
             {
                 return TestEncodable.decode(value);
             }

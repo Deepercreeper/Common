@@ -1,10 +1,12 @@
 package org.deepercreeper.common.threads;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
-public abstract class Stoppable implements Runnable
-{
+public abstract class Stoppable implements Runnable {
     private final Set<FinishListener> listeners = new HashSet<>();
 
     private final String name;
@@ -15,13 +17,15 @@ public abstract class Stoppable implements Runnable
 
     private Thread thread;
 
-    public Stoppable(String name)
-    {
+    public Stoppable() {
+        this.name = null;
+    }
+
+    public Stoppable(@NotNull String name) {
         this.name = name;
     }
 
-    public final void reset()
-    {
+    public final void reset() {
         thread = null;
         stopRequested = false;
         finished = false;
@@ -29,8 +33,7 @@ public abstract class Stoppable implements Runnable
     }
 
     @Override
-    public final void run()
-    {
+    public final void run() {
         thread = Thread.currentThread();
         setName();
         execute();
@@ -38,48 +41,39 @@ public abstract class Stoppable implements Runnable
         finished = true;
     }
 
-    private void setName()
-    {
-        if (name != null)
-        {
+    private void setName() {
+        if (name != null) {
             thread.setName(name);
         }
     }
 
-    private void finished()
-    {
-        for (FinishListener listener : listeners)
-        {
+    private void finished() {
+        for (FinishListener listener : listeners) {
             listener.finished(this);
         }
     }
 
-    public final boolean isFinished()
-    {
+    public final boolean isFinished() {
         return finished;
     }
 
-    public final String getName()
-    {
-        return name;
+    @NotNull
+    public final Optional<String> getName() {
+        return Optional.ofNullable(name);
     }
 
-    public final void addListener(FinishListener listener)
-    {
+    public final void addListener(@NotNull FinishListener listener) {
         listeners.add(listener);
     }
 
-    public final void removeListener(FinishListener listener)
-    {
+    public final void removeListener(@NotNull FinishListener listener) {
         listeners.remove(listener);
     }
 
-    public final void stop()
-    {
+    public final void stop() {
         stopRequested = true;
         stopInternal();
-        if (isInterruptible() && thread != null)
-        {
+        if (isInterruptible() && thread != null) {
             thread.interrupt();
         }
     }
@@ -88,20 +82,18 @@ public abstract class Stoppable implements Runnable
 
     protected void stopInternal() {}
 
-    protected boolean isInterruptible()
-    {
+    protected boolean isInterruptible() {
         return true;
     }
 
-    public final boolean isStopRequested()
-    {
+    public final boolean isStopRequested() {
         return stopRequested;
     }
 
     public abstract void execute();
 
-    public interface FinishListener
-    {
-        void finished(Stoppable stoppable);
+    @FunctionalInterface
+    public interface FinishListener {
+        void finished(@NotNull Stoppable stoppable);
     }
 }

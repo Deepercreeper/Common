@@ -3,180 +3,146 @@ package org.deepercreeper.common.util;
 import org.deepercreeper.common.encoding.Decoder;
 import org.deepercreeper.common.encoding.Encodable;
 import org.deepercreeper.common.encoding.Encoder;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
-public class CodingUtil
-{
+public class CodingUtil {
     public static final String DELIMITER = ",";
 
     private CodingUtil() {}
 
-    public static String encode(String value)
-    {
-        ConditionUtil.checkNotNull(value, "Value");
-        try
-        {
-            return URLEncoder.encode(value, "UTF-8");
+    @NotNull
+    public static String encode(@NotNull String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
         }
-        catch (UnsupportedEncodingException e)
-        {
+        catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Could not encode value:", e);
         }
     }
 
-    public static String encode(String... values)
-    {
-        ConditionUtil.checkNotNull(values, "Values");
+    @NotNull
+    public static String encode(@NotNull String... values) {
         String[] encodedValues = new String[values.length];
-        for (int i = 0; i < values.length; i++)
-        {
+        for (int i = 0; i < values.length; i++) {
             encodedValues[i] = encode(values[i]);
         }
         return encode(join(encodedValues));
     }
 
-    public static String encode(Object... values)
-    {
-        ConditionUtil.checkNotNull(values, "Values");
+    @NotNull
+    public static String encode(@NotNull Object... values) {
         String[] encodedValues = new String[values.length];
-        for (int i = 0; i < values.length; i++)
-        {
+        for (int i = 0; i < values.length; i++) {
             encodedValues[i] = encode(values[i].toString());
         }
         return encode(join(encodedValues));
     }
 
-    public static <T extends Encodable> String encode(Collection<T> encodables)
-    {
-        ConditionUtil.checkNotNull(encodables, "Encodables");
+    @NotNull
+    public static <T extends Encodable> String encode(@NotNull Collection<T> encodables) {
         String[] encodedValues = new String[encodables.size()];
         int i = 0;
-        for (T encodable : encodables)
-        {
+        for (T encodable : encodables) {
             encodedValues[i] = encodable.encode();
             i++;
         }
         return encode(join(encodedValues));
     }
 
-    public static String encode(Encodable... encodables)
-    {
-        ConditionUtil.checkNotNull(encodables, "Encodables");
+    @NotNull
+    public static String encode(@NotNull Encodable... encodables) {
         String[] encodedValues = new String[encodables.length];
-        for (int i = 0; i < encodables.length; i++)
-        {
+        for (int i = 0; i < encodables.length; i++) {
             encodedValues[i] = encodables[i].encode();
         }
         return encode(join(encodedValues));
     }
 
-    public static <T> String encode(Collection<T> values, Encoder<T> encoder)
-    {
-        ConditionUtil.checkNotNull(values, "Values");
-        ConditionUtil.checkNotNull(encoder, "Encoder");
+    @NotNull
+    public static <T> String encode(@NotNull Collection<T> values, @NotNull Encoder<T> encoder) {
         String[] encodedValues = new String[values.size()];
         int i = 0;
-        for (T value : values)
-        {
+        for (T value : values) {
             encodedValues[i] = encoder.encode(value);
             i++;
         }
         return encode(join(encodedValues));
     }
 
-    public static <T> String encode(T[] values, Encoder<T> encoder)
-    {
-        ConditionUtil.checkNotNull(values, "Values");
-        ConditionUtil.checkNotNull(encoder, "Encoder");
+    @NotNull
+    public static <T> String encode(@NotNull T[] values, @NotNull Encoder<T> encoder) {
         String[] encodedValues = new String[values.length];
         int i = 0;
-        for (T value : values)
-        {
+        for (T value : values) {
             encodedValues[i] = encoder.encode(value);
             i++;
         }
         return encode(join(encodedValues));
     }
 
-    public static String decode(String value)
-    {
-        ConditionUtil.checkNotNull(value, "Value");
-        try
-        {
-            return URLDecoder.decode(value, "UTF-8");
+    @NotNull
+    public static String decode(@NotNull String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.name());
         }
-        catch (UnsupportedEncodingException e)
-        {
+        catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Could not decode value:", e);
         }
     }
 
-    public static <T extends Encodable> T[] decodeArray(String value, Decoder<T> decoder, ArrayFactory<T> arrayFactory)
-    {
-        if (value.isEmpty())
-        {
-            return arrayFactory.create(0);
+    @NotNull
+    public static <T extends Encodable> T[] decodeArray(@NotNull String value, @NotNull Decoder<T> decoder, @NotNull Function<Integer, T[]> arrayFactory) {
+        if (value.isEmpty()) {
+            return arrayFactory.apply(0);
         }
         String[] values = split(decode(value));
-        T[] array = arrayFactory.create(values.length);
-        for (int i = 0; i < array.length; i++)
-        {
+        T[] array = arrayFactory.apply(values.length);
+        for (int i = 0; i < array.length; i++) {
             array[i] = decoder.decode(values[i]);
         }
         return array;
     }
 
-    public static <T extends Encodable> List<T> decodeList(String value, Decoder<T> decoder)
-    {
-        if (value.isEmpty())
-        {
+    @NotNull
+    public static <T extends Encodable> List<T> decodeList(@NotNull String value, @NotNull Decoder<T> decoder) {
+        if (value.isEmpty()) {
             return Collections.emptyList();
         }
         String[] values = split(decode(value));
         List<T> list = new ArrayList<>();
-        for (String encodedValue : values)
-        {
+        for (String encodedValue : values) {
             list.add(decoder.decode(encodedValue));
         }
         return list;
     }
 
-    public static String[] split(String value)
-    {
+    @NotNull
+    public static String[] split(@NotNull String value) {
         return value.split(DELIMITER, -1);
     }
 
-    public static String join(String... values)
-    {
+    @NotNull
+    public static String join(@NotNull String... values) {
         return StringUtil.join(values, DELIMITER);
     }
 
-    public static String join(Object... values)
-    {
+    @NotNull
+    public static String join(@NotNull Object... values) {
         return StringUtil.join(values, DELIMITER);
     }
 
-    public static <T> String join(Collection<T> values)
-    {
+    @NotNull
+    public static <T> String join(@NotNull Collection<T> values) {
         return StringUtil.join(values, DELIMITER);
-    }
-
-    public static <T> Encoder<T> toStringEncoder()
-    {
-        return new Encoder<T>()
-        {
-            @Override
-            public String encode(T value)
-            {
-                return "" + value;
-            }
-        };
     }
 }

@@ -1,33 +1,26 @@
 package org.deepercreeper.common.cache;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
-public class HoldingCache<K, V> implements Cache<K, V>
-{
+import java.util.*;
+
+public class HoldingCache<K, V> implements Cache<K, V> {
     private final Map<K, V> items = new HashMap<>();
 
     @Override
-    public void clear()
-    {
+    public void clear() {
         items.clear();
     }
 
     @Override
-    public boolean contains(K key)
-    {
+    public boolean contains(@NotNull K key) {
         return items.containsKey(key);
     }
 
     @Override
-    public boolean containsAll(Collection<K> keys)
-    {
-        for (K key : keys)
-        {
-            if (!items.containsKey(key))
-            {
+    public boolean containsAll(@NotNull Collection<K> keys) {
+        for (K key : keys) {
+            if (!items.containsKey(key)) {
                 return false;
             }
         }
@@ -35,51 +28,44 @@ public class HoldingCache<K, V> implements Cache<K, V>
     }
 
     @Override
-    public boolean containsAll(K[] keys)
-    {
-        for (K key : keys)
-        {
-            if (!items.containsKey(key))
-            {
+    public boolean containsAll(@NotNull K[] keys) {
+        for (K key : keys) {
+            if (!items.containsKey(key)) {
                 return false;
             }
         }
         return true;
     }
 
+    @NotNull
     @Override
-    public V get(K key)
-    {
-        return items.get(key);
+    public Optional<V> get(@NotNull K key) {
+        return Optional.ofNullable(items.get(key));
     }
 
     @Override
-    public void put(K key, V item)
-    {
+    public void put(@NotNull K key, @NotNull V item) {
         items.put(key, item);
     }
 
     @Override
-    public void putAll(Map<K, V> map)
-    {
+    public void putAll(@NotNull Map<K, V> map) {
         items.putAll(map);
     }
 
     @Override
-    public void remove(K key)
-    {
+    public void remove(@NotNull K key) {
         items.remove(key);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return items.values().toString();
     }
 
+    @NotNull
     @Override
-    public Iterator<V> iterator()
-    {
+    public Iterator<V> iterator() {
         return items.values().iterator();
     }
 }

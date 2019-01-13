@@ -3,29 +3,27 @@ package org.deepercreeper.common.cache;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LimitedCacheTest
-{
+import java.util.Optional;
+
+public class LimitedCacheTest {
     @Test
-    public void testPut()
-    {
+    public void testPut() {
         Cache<Integer, String> cache = new LimitedCache<>();
 
         cache.put(0, "0");
         cache.put(1, "1");
 
-        Assert.assertEquals("0", cache.get(0));
-        Assert.assertEquals("1", cache.get(1));
+        Assert.assertEquals(Optional.of("0"), cache.get(0));
+        Assert.assertEquals(Optional.of("1"), cache.get(1));
     }
 
     @Test
-    public void testLimit()
-    {
+    public void testLimit() {
         int size = 5;
 
         Cache<Integer, String> cache = new LimitedCache<>(size);
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             cache.put(i, "" + i);
         }
 
@@ -44,35 +42,30 @@ public class LimitedCacheTest
     }
 
     @Test
-    public void testRepeat()
-    {
+    public void testRepeat() {
         int size = 5;
 
         Cache<Integer, String> cache = new LimitedCache<>(size);
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             cache.put(i, "" + i);
         }
 
         cache.put(0, "0");
         cache.put(1, "1");
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             Assert.assertTrue(cache.contains(i));
         }
     }
 
     @Test
-    public void testRoll()
-    {
+    public void testRoll() {
         int size = 5;
 
         Cache<Integer, String> cache = new LimitedCache<>(size);
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             cache.put(i, "" + i);
         }
 

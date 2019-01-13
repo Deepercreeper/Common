@@ -1,6 +1,8 @@
 package org.deepercreeper.common.encoding;
 
-public interface Decoder<T extends Encodable>
-{
-    T decode(String value);
+import org.jetbrains.annotations.NotNull;
+
+@FunctionalInterface
+public interface Decoder<T extends Encodable> {
+    @NotNull T decode(@NotNull String value);
 }

@@ -1,23 +1,25 @@
 package org.deepercreeper.common.cache;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
-public interface Cache<K, V> extends Iterable<V>
-{
-    boolean contains(K key);
+public interface Cache<K, V> extends Iterable<V> {
+    boolean contains(@NotNull K key);
 
-    boolean containsAll(Collection<K> keys);
+    boolean containsAll(@NotNull Collection<K> keys);
 
-    boolean containsAll(K[] keys);
+    boolean containsAll(@NotNull K[] keys);
 
-    V get(K key);
+    @NotNull Optional<V> get(@NotNull K key);
 
-    void put(K key, V item);
+    void put(@NotNull K key, @NotNull V item);
 
-    void putAll(Map<K, V> map);
+    void putAll(@NotNull Map<K, V> map);
 
-    void remove(K key);
+    void remove(@NotNull K key);
 
     void clear();
 }
